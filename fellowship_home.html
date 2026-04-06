@@ -1,0 +1,549 @@
+<style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --navy:#1e3a5c;--navy2:#162d48;--navy3:#0f1f33;
+      --gold:#c8a84b;--gold2:#e8c86b;
+      --white:#fff;--off:#f4f6f9;--card:#fff;
+      --text:#1a2a3a;--muted:#6b7e93;--light:#e8edf3;
+      --r:18px;--r2:12px;
+      --shadow:0 4px 24px rgba(30,58,92,.12);
+      --shadow2:0 2px 10px rgba(30,58,92,.08);
+    }
+    html,body{min-height:100%;background:var(--off);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:var(--text);-webkit-font-smoothing:antialiased}
+
+    /* ── STICKY NAV ── */
+    .topnav{
+      position:sticky;top:0;z-index:100;
+      background:var(--navy2);
+      display:flex;align-items:center;
+      padding:10px 16px;
+      box-shadow:0 2px 12px rgba(0,0,0,.25);
+    }
+    .topnav .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+    .topnav .nav-logo img{width:34px;height:34px;object-fit:contain}
+    .topnav .nav-logo span{color:var(--white);font-size:.88rem;font-weight:700;letter-spacing:.01em}
+
+    /* ── HERO ── */
+    .hero{
+      background:linear-gradient(160deg,var(--navy3) 0%,var(--navy) 60%,#2a5080 100%);
+      padding:52px 20px 44px;text-align:center;position:relative;overflow:hidden;
+    }
+    .hero::before{content:'';position:absolute;inset:0;
+      background:radial-gradient(ellipse at 70% 20%,rgba(200,168,75,.15) 0%,transparent 65%);
+      pointer-events:none}
+    .hero img.logo{width:110px;height:110px;object-fit:contain;display:block;margin:0 auto 18px;
+      filter:drop-shadow(0 4px 16px rgba(0,0,0,.3))}
+    .hero h1{color:#fff;font-size:1.75rem;font-weight:900;letter-spacing:-.02em;line-height:1.15;margin-bottom:6px}
+    .hero .sub{color:rgba(255,255,255,.65);font-size:.9rem;font-weight:400;margin-bottom:18px}
+    .hero .divider{width:36px;height:3px;background:var(--gold);border-radius:2px;margin:0 auto 18px}
+    .hero .hero-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+    .hero .btn-primary{
+      background:var(--gold);color:var(--navy3);font-size:.88rem;font-weight:700;
+      padding:12px 22px;border-radius:50px;text-decoration:none;
+      box-shadow:0 2px 12px rgba(200,168,75,.4);letter-spacing:.01em;
+    }
+    .hero .btn-ghost{
+      background:rgba(255,255,255,.12);color:#fff;font-size:.88rem;font-weight:600;
+      padding:12px 22px;border-radius:50px;text-decoration:none;
+      border:1.5px solid rgba(255,255,255,.3);letter-spacing:.01em;
+    }
+
+    /* ── SECTION WRAPPER ── */
+    .section{padding:28px 16px;max-width:480px;margin:0 auto}
+    .section+.section{padding-top:0}
+    .sec-label{font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+      color:var(--muted);margin-bottom:14px;padding-left:2px}
+    .sec-title{font-size:1.25rem;font-weight:800;color:var(--navy);margin-bottom:6px;line-height:1.25}
+    .sec-sub{font-size:.88rem;color:var(--muted);line-height:1.55;margin-bottom:18px}
+
+    /* ── SERVICE TIMES ── */
+    .times-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:8px}
+    .time-card{
+      background:var(--navy);border-radius:var(--r2);padding:18px 14px;text-align:center;
+      box-shadow:var(--shadow2);
+    }
+    .time-card .t-icon{font-size:1.4rem;margin-bottom:6px}
+    .time-card .t-time{color:#fff;font-size:1.1rem;font-weight:800;line-height:1.1;margin-bottom:4px}
+    .time-card .t-label{color:rgba(255,255,255,.6);font-size:.72rem;font-weight:600;
+      letter-spacing:.06em;text-transform:uppercase}
+    .time-card .t-day{color:var(--gold);font-size:.75rem;font-weight:700;margin-top:4px}
+
+    /* ── PLAYLIST CARDS ── */
+    .cards{display:flex;flex-direction:column;gap:14px;margin-bottom:6px}
+    .card{display:block;text-decoration:none;background:var(--card);border-radius:var(--r);
+      box-shadow:var(--shadow);overflow:hidden;transition:transform .18s,box-shadow .18s;
+      -webkit-tap-highlight-color:transparent}
+    .card:active{transform:scale(.975);box-shadow:0 2px 10px rgba(30,58,92,.09)}
+    .card-thumb{width:100%;aspect-ratio:16/9;background:var(--navy);position:relative;overflow:hidden}
+    .card-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+    .card-thumb .play-ov{position:absolute;inset:0;display:flex;align-items:center;
+      justify-content:center;background:rgba(0,0,0,.3)}
+    .play-ov svg{width:52px;height:52px;filter:drop-shadow(0 2px 8px rgba(0,0,0,.4))}
+    .card-body{padding:16px 16px 18px}
+    .card-tag{display:inline-block;font-size:.66rem;font-weight:700;letter-spacing:.1em;
+      text-transform:uppercase;color:var(--gold);margin-bottom:5px}
+    .card-title{font-size:1rem;font-weight:700;color:var(--text);line-height:1.3;margin-bottom:12px}
+    .card-btn{display:inline-flex;align-items:center;gap:7px;background:var(--navy);color:#fff;
+      font-size:.82rem;font-weight:600;padding:9px 16px;border-radius:50px;text-decoration:none}
+    .card-btn svg{width:15px;height:15px;flex-shrink:0}
+
+    /* ── VISIT CARD ── */
+    .visit-card{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;margin-bottom:6px}
+    .visit-map{width:100%;height:160px;background:var(--light);display:block;border:none;object-fit:cover}
+    .visit-body{padding:18px}
+    .visit-row{display:flex;gap:12px;align-items:flex-start;margin-bottom:14px}
+    .visit-row:last-child{margin-bottom:0}
+    .vr-icon{width:36px;height:36px;background:var(--off);border-radius:10px;display:flex;
+      align-items:center;justify-content:center;flex-shrink:0}
+    .vr-icon svg{width:18px;height:18px;color:var(--navy)}
+    .vr-text strong{display:block;font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:1px}
+    .vr-text span{font-size:.82rem;color:var(--muted);line-height:1.4}
+    .visit-btn{
+      display:flex;align-items:center;justify-content:center;gap:8px;
+      background:var(--navy);color:#fff;font-size:.88rem;font-weight:700;
+      padding:13px;border-radius:var(--r2);text-decoration:none;margin-top:16px;
+      -webkit-tap-highlight-color:transparent;
+    }
+    .visit-btn svg{width:16px;height:16px}
+
+    /* ── GIVE ── */
+    .give-card{background:linear-gradient(135deg,var(--navy2),var(--navy));
+      border-radius:var(--r);box-shadow:var(--shadow);padding:24px 20px;margin-bottom:6px}
+    .give-card .gc-title{color:#fff;font-size:1.15rem;font-weight:800;margin-bottom:4px}
+    .give-card .gc-sub{color:rgba(255,255,255,.6);font-size:.84rem;line-height:1.45;margin-bottom:20px}
+    .give-options{display:flex;flex-direction:column;gap:10px}
+    .give-btn{
+      display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.1);
+      border-radius:var(--r2);padding:14px 16px;text-decoration:none;
+      border:1.5px solid rgba(255,255,255,.18);-webkit-tap-highlight-color:transparent;
+      transition:background .15s;
+    }
+    .give-btn:active{background:rgba(255,255,255,.18)}
+    .give-btn .gb-icon{width:38px;height:38px;background:rgba(255,255,255,.12);border-radius:10px;
+      display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .give-btn .gb-icon svg{width:20px;height:20px;color:#fff}
+    .give-btn .gb-text{flex:1}
+    .give-btn .gb-text strong{display:block;color:#fff;font-size:.9rem;font-weight:700;margin-bottom:1px}
+    .give-btn .gb-text span{color:rgba(255,255,255,.55);font-size:.78rem}
+    .give-btn .gb-arrow{color:rgba(255,255,255,.4)}
+    .give-btn .gb-arrow svg{width:16px;height:16px}
+    .give-divider{display:flex;align-items:center;gap:10px;margin:4px 0}
+    .give-divider span{color:rgba(255,255,255,.3);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase}
+    .give-divider::before,.give-divider::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.12)}
+
+    /* ── CONNECT ── */
+    .connect-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:6px}
+    .connect-item{
+      background:var(--card);border-radius:var(--r2);padding:16px 14px;
+      text-decoration:none;box-shadow:var(--shadow2);
+      display:flex;flex-direction:column;align-items:center;gap:8px;
+      text-align:center;-webkit-tap-highlight-color:transparent;transition:transform .15s;
+    }
+    .connect-item:active{transform:scale(.96)}
+    .ci-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;
+      justify-content:center}
+    .ci-icon svg,.ci-icon img{width:24px;height:24px}
+    .ci-label{font-size:.8rem;font-weight:700;color:var(--text)}
+    .ci-sub{font-size:.72rem;color:var(--muted)}
+
+    /* ── CONTACT ── */
+    .contact-card{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);
+      overflow:hidden;margin-bottom:6px}
+    .contact-body{padding:18px}
+    .contact-row{display:flex;align-items:center;gap:12px;padding:12px 0;
+      border-bottom:1px solid var(--light);text-decoration:none;}
+    .contact-row:last-child{border-bottom:none}
+    .cr-icon{width:38px;height:38px;background:var(--off);border-radius:10px;
+      display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .cr-icon svg{width:18px;height:18px;color:var(--navy)}
+    .cr-text strong{display:block;font-size:.82rem;font-weight:700;color:var(--text);margin-bottom:1px}
+    .cr-text span{font-size:.8rem;color:var(--muted)}
+    .cr-arrow{margin-left:auto;color:var(--muted)}
+    .cr-arrow svg{width:16px;height:16px}
+
+    /* ── APP BANNER ── */
+    .app-banner{
+      background:var(--navy);border-radius:var(--r);padding:20px;
+      display:flex;align-items:center;gap:14px;margin-bottom:6px;
+      box-shadow:var(--shadow);
+    }
+    .app-icon{width:52px;height:52px;background:rgba(255,255,255,.1);border-radius:14px;
+      display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .app-icon svg{width:28px;height:28px;color:#fff}
+    .app-text{flex:1}
+    .app-text strong{display:block;color:#fff;font-size:.95rem;font-weight:700;margin-bottom:2px}
+    .app-text span{color:rgba(255,255,255,.6);font-size:.78rem;line-height:1.4}
+    .app-stores{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+    .store-btn{
+      display:flex;align-items:center;gap:7px;background:rgba(255,255,255,.12);
+      color:#fff;font-size:.78rem;font-weight:600;padding:8px 14px;border-radius:50px;
+      text-decoration:none;border:1px solid rgba(255,255,255,.2);
+    }
+    .store-btn svg{width:14px;height:14px}
+
+    /* ── CHANNEL LINK ── */
+    .channel-banner{
+      background:var(--navy);border-radius:var(--r);padding:18px 18px;
+      display:flex;align-items:center;gap:12px;text-decoration:none;
+      box-shadow:var(--shadow);-webkit-tap-highlight-color:transparent;margin-bottom:6px;
+    }
+    .channel-banner:active{opacity:.85}
+    .ch-icon{width:42px;height:42px;background:rgba(255,255,255,.1);border-radius:50%;
+      display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .ch-icon svg{width:22px;height:22px}
+    .ch-text{flex:1}
+    .ch-text strong{display:block;color:#fff;font-size:.9rem;font-weight:700;margin-bottom:1px}
+    .ch-text span{color:rgba(255,255,255,.55);font-size:.77rem}
+    .ch-arrow svg{width:16px;height:16px;color:rgba(255,255,255,.4)}
+
+    /* ── FOOTER ── */
+    footer{text-align:center;padding:28px 16px 48px;color:var(--muted);font-size:.77rem;line-height:1.7}
+    footer a{color:var(--navy);text-decoration:none}
+    .footer-logo{display:block;width:48px;height:48px;object-fit:contain;margin:0 auto 10px;opacity:.4}
+
+
+    /* ── PASTOR VIDEO CARD ── */
+    .pastor-video-card{
+      display:block;text-decoration:none;
+      background:var(--card);border-radius:var(--r);
+      box-shadow:var(--shadow);overflow:hidden;
+      -webkit-tap-highlight-color:transparent;
+      transition:transform .18s,box-shadow .18s;
+    }
+    .pastor-video-card:active{transform:scale(.975)}
+    .pastor-thumb{
+      width:100%;aspect-ratio:16/9;
+      position:relative;overflow:hidden;background:var(--navy3);
+    }
+    .pastor-thumb img{
+      width:100%;height:100%;object-fit:cover;display:block;
+    }
+    .pastor-play-ov{
+      position:absolute;inset:0;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      background:rgba(0,0,0,.35);gap:10px;
+    }
+    .pastor-play-btn svg{width:64px;height:44px;filter:drop-shadow(0 2px 10px rgba(0,0,0,.5))}
+    .pastor-play-label{
+      color:#fff;font-size:.8rem;font-weight:600;
+      background:rgba(0,0,0,.45);padding:5px 14px;border-radius:50px;
+      letter-spacing:.03em;
+    }
+    .pastor-video-footer{
+      display:flex;align-items:center;gap:10px;
+      padding:13px 16px;border-top:1px solid var(--light);
+    }
+    .pastor-video-footer span{
+      font-size:.83rem;font-weight:600;color:var(--text);line-height:1.3;
+    }
+
+    /* ── VIDEO EMBED ── */
+    .video-wrap{
+      position:relative;width:100%;padding-bottom:56.25%;
+      border-radius:var(--r);overflow:hidden;
+      box-shadow:var(--shadow);background:var(--navy3);
+    }
+    .video-wrap iframe{
+      position:absolute;top:0;left:0;width:100%;height:100%;
+      border:none;
+    }
+
+  </style>
+<!-- STICKY NAV -->
+<nav class="topnav">
+  <a href="#top" class="nav-logo">
+    <img src="https://dq5pwpg1q8ru0.cloudfront.net/2025/01/28/15/20/45/6c93f54a-1714-4c99-8243-bfa1f7d9f233/FELLOWSHIP-Logo.zip---7.png" alt="FBC Shield"/>
+    <span>Fellowship Baptist Church</span>
+  </a>
+</nav>
+
+<!-- HERO -->
+<div class="hero" id="top">
+  <img class="logo" src="https://dq5pwpg1q8ru0.cloudfront.net/2025/01/28/15/20/45/6c93f54a-1714-4c99-8243-bfa1f7d9f233/FELLOWSHIP-Logo.zip---7.png" alt="Fellowship Baptist Church"/>
+  <h1>Fellowship Baptist Church</h1>
+  <p class="sub">Cabot, Arkansas</p>
+  <div class="divider"></div>
+  <div class="hero-btns">
+    <a class="btn-primary" href="#visit">Plan Your Visit</a>
+    <a class="btn-ghost" href="#sermons">Watch Sermons</a>
+  </div>
+</div>
+
+<!-- SERVICE TIMES -->
+<div class="section">
+  <p class="sec-label">Join Us This Sunday</p>
+  <div class="times-grid">
+    <div class="time-card">
+      <div class="t-icon">📖</div>
+      <div class="t-time">9:30 AM</div>
+      <div class="t-label">Sunday Groups</div>
+      <div class="t-day">Every Sunday</div>
+    </div>
+    <div class="time-card">
+      <div class="t-icon">🙏</div>
+      <div class="t-time">10:45 AM</div>
+      <div class="t-label">Worship Service</div>
+      <div class="t-day">Every Sunday</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- PASTOR WELCOME -->
+<div class="section" id="welcome">
+  <p class="sec-label">A Word from Our Pastor</p>
+  <p class="sec-title">Welcome from Pastor Travis</p>
+  <p class="sec-sub">We&#x2019;re so glad you&#x2019;re here. Pastor Travis would love to personally welcome you to Fellowship Baptist Church.</p>
+  <a class="pastor-video-card" href="https://www.youtube.com/watch?v=3bCnRDLiVhY" target="_blank" rel="noopener">
+    <div class="pastor-thumb">
+      <img src="https://img.youtube.com/vi/3bCnRDLiVhY/maxresdefault.jpg" alt="Pastor Travis Smith Welcome Video"/>
+      <div class="pastor-play-ov">
+        <div class="pastor-play-btn">
+          <svg viewBox="0 0 68 48" fill="none"><rect width="68" height="48" rx="10" fill="#FF0000" fill-opacity=".92"/><path d="M45 24L27 34V14L45 24Z" fill="white"/></svg>
+        </div>
+        <div class="pastor-play-label">Watch on YouTube</div>
+      </div>
+    </div>
+    <div class="pastor-video-footer">
+      <svg viewBox="0 0 24 24" fill="#FF0000" width="20" height="20"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+      <span>Pastor Travis Smith &mdash; Welcome to Fellowship</span>
+    </div>
+  </a>
+</div>
+
+<!-- SERMONS -->
+<div class="section" id="sermons">
+  <p class="sec-label">Message Series</p>
+  <p class="sec-title">Watch Our Sermons</p>
+  <p class="sec-sub">Catch up on our current and recent series — anytime, anywhere.</p>
+  <div class="cards">
+
+    <a class="card" href="https://www.youtube.com/watch?v=wIjAEYNpxBM&list=PLJajEa8IDco2LFMCm9Q8jTv_h2lzeR3CH" target="_blank" rel="noopener">
+      <div class="card-thumb">
+        <img src="https://img.youtube.com/vi/wIjAEYNpxBM/maxresdefault.jpg" alt="Sermon Series" loading="lazy"/>
+        <div class="play-ov">
+          <svg viewBox="0 0 68 48" fill="none"><rect width="68" height="48" rx="10" fill="#FF0000" fill-opacity=".9"/><path d="M45 24L27 34V14L45 24Z" fill="white"/></svg>
+        </div>
+      </div>
+      <div class="card-body">
+        <span class="card-tag">Current Easter Series</span>
+        <div class="card-title">The Hour</div>
+        <span class="card-btn">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          Watch Playlist
+        </span>
+      </div>
+    </a>
+
+    <a class="card" href="https://www.youtube.com/watch?v=4QzEUdVkFkk&list=PLJajEa8IDco38NhXzcvklRcjxHtViLJ9z" target="_blank" rel="noopener">
+      <div class="card-thumb">
+        <img src="https://img.youtube.com/vi/4QzEUdVkFkk/maxresdefault.jpg" alt="Sermon Series" loading="lazy"/>
+        <div class="play-ov">
+          <svg viewBox="0 0 68 48" fill="none"><rect width="68" height="48" rx="10" fill="#FF0000" fill-opacity=".9"/><path d="M45 24L27 34V14L45 24Z" fill="white"/></svg>
+        </div>
+      </div>
+      <div class="card-body">
+        <span class="card-tag">Current Sermon Series</span>
+        <div class="card-title">1 Timothy</div>
+        <span class="card-btn">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          Watch Playlist
+        </span>
+      </div>
+    </a>
+
+  </div>
+
+  <a class="channel-banner" href="https://www.youtube.com/@cabotfellowship.church" target="_blank" rel="noopener">
+    <div class="ch-icon">
+      <svg viewBox="0 0 24 24" fill="white"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+    </div>
+    <div class="ch-text">
+      <strong>View All Sermons</strong>
+      <span>YouTube · @cabotfellowship.church</span>
+    </div>
+    <div class="ch-arrow"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 18l6-6-6-6"/></svg></div>
+  </a>
+</div>
+
+<!-- PLAN YOUR VISIT -->
+<div class="section" id="visit">
+  <p class="sec-label">We'd Love to Meet You</p>
+  <p class="sec-title">Plan Your Visit</p>
+  <div class="visit-card">
+    <img
+      src="https://maps.googleapis.com/maps/api/staticmap?center=14717+AR-5,+Cabot,+AR+72023&zoom=14&size=600x300&markers=14717+AR-5,+Cabot,+AR+72023"
+      alt="Fellowship Baptist Church — Cabot, AR"
+      class="visit-map"
+      style="width:100%;height:200px;object-fit:cover;object-position:center 60%;display:block;border:none;"
+    />
+    <div class="visit-body">
+      <div class="visit-row">
+        <div class="vr-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+        </div>
+        <div class="vr-text">
+          <strong>Address</strong>
+          <span>14717 AR-5, Cabot, AR 72023</span>
+        </div>
+      </div>
+      <div class="visit-row">
+        <div class="vr-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div class="vr-text">
+          <strong>Sunday Schedule</strong>
+          <span>9:30 AM — Sunday Groups<br/>10:45 AM — Worship Service</span>
+        </div>
+      </div>
+      <div class="visit-row">
+        <div class="vr-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="vr-text">
+          <strong>Everyone is Welcome</strong>
+          <span>Come as you are — we'd love to meet you and your family.</span>
+        </div>
+      </div>
+      <a class="visit-btn" href="https://maps.google.com/?q=14717+AR-5,+Cabot,+AR+72023" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+        Get Directions
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- GIVE -->
+<div class="section" id="give">
+  <p class="sec-label">Support the Mission</p>
+  <div class="give-card">
+    <div class="gc-title">Give to Fellowship Baptist</div>
+    <div class="gc-sub">Your generosity makes ministry possible. Give online, by text, or by mail.</div>
+    <div class="give-options">
+
+      <a class="give-btn" href="https://give.tithe.ly/?formId=6008c1e5-0bf0-430a-bb2c-76986db24227" target="_blank" rel="noopener">
+        <div class="gb-icon">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
+        </div>
+        <div class="gb-text">
+          <strong>Give Online</strong>
+          <span>Secure · One-time or recurring</span>
+        </div>
+        <div class="gb-arrow"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 18l6-6-6-6"/></svg></div>
+      </a>
+
+      <div class="give-divider"><span>or</span></div>
+
+      <a class="give-btn" href="sms:8447896713&body=GIVE">
+        <div class="gb-icon">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+        </div>
+        <div class="gb-text">
+          <strong>Give by Text</strong>
+          <span>Text GIVE to (844) 789-6713</span>
+        </div>
+        <div class="gb-arrow"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 18l6-6-6-6"/></svg></div>
+      </a>
+
+    </div>
+  </div>
+</div>
+
+<!-- CONNECT -->
+<div class="section" id="connect">
+  <p class="sec-label">Stay Connected</p>
+  <div class="connect-grid">
+
+    <a class="connect-item" href="https://facebook.com/cabotfellowship" target="_blank" rel="noopener">
+      <div class="ci-icon" style="background:#1877F2">
+        <svg viewBox="0 0 24 24" fill="white"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+      </div>
+      <div class="ci-label">Facebook</div>
+      <div class="ci-sub">@cabotfellowship</div>
+    </a>
+
+    <a class="connect-item" href="https://www.youtube.com/@cabotfellowship.church" target="_blank" rel="noopener">
+      <div class="ci-icon" style="background:#FF0000">
+        <svg viewBox="0 0 24 24" fill="white"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+      </div>
+      <div class="ci-label">YouTube</div>
+      <div class="ci-sub">Watch Sermons</div>
+    </a>
+
+    <a class="connect-item" href="mailto:info@cabotfellowship.church">
+      <div class="ci-icon" style="background:var(--navy)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      </div>
+      <div class="ci-label">Email Us</div>
+      <div class="ci-sub">info@cabotfellowship</div>
+    </a>
+
+    <a class="connect-item" href="tel:5014047409">
+      <div class="ci-icon" style="background:#34a853">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.16 6.16l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      </div>
+      <div class="ci-label">Call Us</div>
+      <div class="ci-sub">(501) 404-7409</div>
+    </a>
+
+  </div>
+
+  <!-- APP BANNER -->
+  <div class="app-banner">
+    <div class="app-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+    </div>
+    <div class="app-text">
+      <strong>Get the FBC App</strong>
+      <span>Sermons, events, prayer, giving — all in one place.</span>
+      <div class="app-stores">
+        <a class="store-btn" href="https://apps.apple.com/search?term=fellowship+baptist+cabot" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+          App Store
+        </a>
+        <a class="store-btn" href="https://play.google.com/store/search?q=fellowship+baptist+cabot&c=apps" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3.18 23.76a2 2 0 0 1-1-.28A2 2 0 0 1 1 21.72V2.28a2 2 0 0 1 1.18-1.76L13.92 12zM5.12.45l9.88 5.7-2.7 2.7zM20.6 10.36l-2.3-1.33-3.14 3.14 3.14 3.14 2.32-1.34A2 2 0 0 0 22 12a2 2 0 0 0-1.4-1.64zM5.12 23.55l7.18-7.18-2.66-2.66z"/></svg>
+          Google Play
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<div class="section" id="contact">
+  <p class="sec-label">Get in Touch</p>
+  <div class="contact-card">
+    <div class="contact-body">
+      <a class="contact-row" href="tel:5014047409">
+        <div class="cr-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.16 6.16l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+        <div class="cr-text"><strong>(501) 404-7409</strong><span>Tap to call</span></div>
+        <div class="cr-arrow"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 18l6-6-6-6"/></svg></div>
+      </a>
+      <a class="contact-row" href="mailto:info@cabotfellowship.church">
+        <div class="cr-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+        <div class="cr-text"><strong>info@cabotfellowship.church</strong><span>Email us anytime</span></div>
+        <div class="cr-arrow"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 18l6-6-6-6"/></svg></div>
+      </a>
+      <a class="contact-row" href="https://maps.google.com/?q=14717+AR-5,+Cabot,+AR+72023" target="_blank" rel="noopener">
+        <div class="cr-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg></div>
+        <div class="cr-text"><strong>14717 AR-5, Cabot, AR 72023</strong><span>Get directions</span></div>
+        <div class="cr-arrow"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 18l6-6-6-6"/></svg></div>
+      </a>
+      <div class="contact-row" style="cursor:default">
+        <div class="cr-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+        <div class="cr-text"><strong>Office Hours</strong><span>Mon–Thu · 9 AM – 3 PM</span></div>
+      </div>
+      <div class="contact-row" style="cursor:default">
+        <div class="cr-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 13V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h9"/><polyline points="22 7 12 13 2 7"/><path d="M16 19h6"/><path d="M19 16v6"/></svg></div>
+        <div class="cr-text"><strong>Mailing Address</strong><span>PO Box 639, Cabot, AR 72023</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <img class="footer-logo" src="https://dq5pwpg1q8ru0.cloudfront.net/2025/01/28/15/20/45/6c93f54a-1714-4c99-8243-bfa1f7d9f233/FELLOWSHIP-Logo.zip---7.png" alt=""/>
+  &copy; 2026 Fellowship Baptist Church · Cabot, AR<br/>
+  <a href="https://www.cabotfellowship.church">cabotfellowship.church</a>
+</footer>
